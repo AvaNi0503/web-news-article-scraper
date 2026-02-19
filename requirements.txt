@@ -1,0 +1,7 @@
+/requirements.txt</path>
+<content.>
+selenium==4.15.2
+webdriver-manager==4.0.1
+requests==2.31.0
+translate==3.6.1
+python-dotenv==1.0.0
