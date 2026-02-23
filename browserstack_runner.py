@@ -138,6 +138,12 @@ class BrowserStackRunner:
                 
                 print(f"\nTHREAD {thread_id}: Scraped {len(articles)} articles")
                 print(f"THREAD {thread_id}: Found {len(repeated)} repeated words")
+                
+                # Set BrowserStack session status to passed
+                driver.execute_script(
+                    'browserstack_executor: {"action": "setSessionStatus", '
+                    '"arguments": {"status":"passed","reason": "All steps executed successfully"}}'
+                )
             
             # Close driver
             if driver:
@@ -146,6 +152,16 @@ class BrowserStackRunner:
         except Exception as e:
             result["error"] = str(e)
             print(f"THREAD {thread_id}: Error - {e}")
+            
+            # Set BrowserStack session status to failed
+            if driver:
+                try:
+                    driver.execute_script(
+                        'browserstack_executor: {"action": "setSessionStatus", '
+                        '"arguments": {"status":"failed","reason": "' + str(e) + '"}}'
+                    )
+                except:
+                    pass
             
         finally:
             # Make sure to quit the driver
